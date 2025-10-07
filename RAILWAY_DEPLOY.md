@@ -50,6 +50,7 @@ YOUR_CHAT_ID=your_telegram_chat_id_here
 ### **Step 5: Get Your Bot URL**
 
 After deployment, Railway gives you a URL like:
+
 ```
 https://your-app-name-production.up.railway.app
 ```
@@ -57,6 +58,7 @@ https://your-app-name-production.up.railway.app
 ## 🔧 **Configuration Details**
 
 ### **Railway.json Configuration**
+
 ```json
 {
   "$schema": "https://railway.app/railway.schema.json",
@@ -72,6 +74,7 @@ https://your-app-name-production.up.railway.app
 ```
 
 ### **Required Files**
+
 - ✅ `patwari_mcq_bot.py` - Main bot file
 - ✅ `requirements.txt` - Python dependencies
 - ✅ `railway.json` - Railway configuration
@@ -80,18 +83,21 @@ https://your-app-name-production.up.railway.app
 ## 🎮 **Bot Features (All Working on Railway)**
 
 ### **Commands**
+
 - `/start` - Welcome message
 - `/question` - Get instant MCQ
 - `/topics` - Interactive topic selection
 - `/help` - Help information
 
 ### **Interactive Features**
+
 - 🎯 **Topic Selection** - Click buttons to choose topics
 - 🧠 **Quiz Mode** - Answer A/B/C/D, get instant feedback
 - 📄 **Auto-save** - All questions saved to file
 - ⏰ **Scheduled Questions** - Every 30 minutes (if enabled)
 
 ### **Topics Available**
+
 1. General Science
 2. General Hindi
 3. General English
@@ -103,18 +109,19 @@ https://your-app-name-production.up.railway.app
 
 ## 🚀 **Advantages Over Vercel**
 
-| Feature | Railway | Vercel |
-|---------|---------|---------|
-| Webhooks | ✅ Free | ❌ Pro only |
-| Always-on | ✅ Yes | ❌ Serverless |
-| Background tasks | ✅ Yes | ❌ Limited |
-| Cold starts | ❌ None | ❌ Yes |
-| Free tier | ✅ $5/month | ✅ Limited |
-| Bot support | ✅ Perfect | ❌ Complex |
+| Feature          | Railway     | Vercel        |
+| ---------------- | ----------- | ------------- |
+| Webhooks         | ✅ Free     | ❌ Pro only   |
+| Always-on        | ✅ Yes      | ❌ Serverless |
+| Background tasks | ✅ Yes      | ❌ Limited    |
+| Cold starts      | ❌ None     | ❌ Yes        |
+| Free tier        | ✅ $5/month | ✅ Limited    |
+| Bot support      | ✅ Perfect  | ❌ Complex    |
 
 ## 🔍 **Monitoring & Logs**
 
 ### **View Logs**
+
 1. Go to Railway dashboard
 2. Click your project
 3. Go to **Deployments** tab
@@ -122,6 +129,7 @@ https://your-app-name-production.up.railway.app
 5. View **Logs** tab
 
 ### **Common Log Messages**
+
 ```
 🤖 Bot is running...
 OpenAI client initialized successfully
@@ -131,16 +139,19 @@ Bot initialized with 8 topics
 ## 🛠 **Troubleshooting**
 
 ### **Bot Not Responding**
+
 1. Check Railway logs for errors
 2. Verify environment variables are set
 3. Ensure Telegram bot token is correct
 
 ### **Environment Variables Not Working**
+
 1. Go to Railway → Variables tab
 2. Add each variable manually
 3. Redeploy the project
 
 ### **Dependencies Issues**
+
 1. Check `requirements.txt` is complete
 2. Railway auto-installs from requirements.txt
 3. Check logs for import errors
@@ -156,12 +167,14 @@ Bot initialized with 8 topics
 ## 💰 **Pricing**
 
 ### **Free Tier**
+
 - $5 credit monthly
 - Perfect for small bots
 - 512MB RAM
 - 1GB storage
 
 ### **Pro Tier** (if needed later)
+
 - $5/month per service
 - More resources
 - Custom domains
@@ -169,6 +182,7 @@ Bot initialized with 8 topics
 ## 🎉 **Success!**
 
 Once deployed, your bot will:
+
 - ✅ Run 24/7 on Railway
 - ✅ Respond to all Telegram commands
 - ✅ Generate MCQs using OpenAI
