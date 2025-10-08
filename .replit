@@ -1,8 +1,0 @@
-run = "python patwari_mcq_bot.py"
-modules = ["python-3.11"]
-
-[nix]
-channel = "stable-22_11"
-
-[deployment]
-run = ["sh", "-c", "python patwari_mcq_bot.py"]

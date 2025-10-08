@@ -378,7 +378,7 @@ def generate_question_image(topic, math_subtopic=None, question_text="", options
         return response.data[0].url
     except Exception as e:
         print(f"Error generating image: {e}")
-    return None
+        return None
 
 # Question generation function
 def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=None):
@@ -518,6 +518,7 @@ interface_texts = {
         "explanation": "स्पष्टीकरण:",
         "stats_title": "📊 आपके आंकड़े",
         "total_questions": "कुल प्रश्न:",
+        "correct_answers": "सही उत्तर:",
         "wrong_answers": "गलत उत्तर:",
         "accuracy": "सटीकता:",
         "reset_stats": "आंकड़े रीसेट करें"
@@ -576,25 +577,25 @@ async def manual_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
         max_attempts = 3
         for attempt in range(max_attempts):
             full_response, topic, math_subtopic, needs_image = generate_mcq(selected_topic, difficulty, chat_id, language, math_subtopic)
-    question_text, options_text, correct_answer, explanation = parse_question(full_response)
+            question_text, options_text, correct_answer, explanation = parse_question(full_response)
             
             if correct_answer and correct_answer in ['A', 'B', 'C', 'D']:
                 break
             elif attempt == max_attempts - 1:
                 correct_answer = random.choice(['A', 'B', 'C', 'D'])
                 explanation = "Answer assigned randomly due to parsing issue."
-    
-    # Store active question
+        
+        # Store active question
         active_questions[chat_id] = {
-        'question_text': question_text,
-        'options_text': options_text,
-        'correct_answer': correct_answer,
-        'explanation': explanation,
-        'topic': topic,
+            'question_text': question_text,
+            'options_text': options_text,
+            'correct_answer': correct_answer,
+            'explanation': explanation,
+            'topic': topic,
             'difficulty': difficulty,
-        'full_response': full_response
-    }
-    
+            'full_response': full_response
+        }
+        
         # Save question to database
         save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "Basic Mathematics" else None)
         
@@ -624,7 +625,7 @@ async def manual_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
             except Exception as e:
                 print(f"Error with image generation: {e}")
                 await update.message.reply_text(question_message, parse_mode="Markdown")
-    else:
+        else:
             await update.message.reply_text(question_message, parse_mode="Markdown")
             
     except Exception as e:
@@ -649,25 +650,25 @@ async def send_question_to_user(context, chat_id):
         max_attempts = 3
         for attempt in range(max_attempts):
             full_response, topic, math_subtopic, needs_image = generate_mcq(selected_topic, difficulty, chat_id, language, math_subtopic)
-    question_text, options_text, correct_answer, explanation = parse_question(full_response)
+            question_text, options_text, correct_answer, explanation = parse_question(full_response)
             
             if correct_answer and correct_answer in ['A', 'B', 'C', 'D']:
                 break
             elif attempt == max_attempts - 1:
                 correct_answer = random.choice(['A', 'B', 'C', 'D'])
                 explanation = "Answer assigned randomly due to parsing issue."
-    
-    # Store active question
-    active_questions[chat_id] = {
-        'question_text': question_text,
-        'options_text': options_text,
-        'correct_answer': correct_answer,
-        'explanation': explanation,
-        'topic': topic,
+        
+        # Store active question
+        active_questions[chat_id] = {
+            'question_text': question_text,
+            'options_text': options_text,
+            'correct_answer': correct_answer,
+            'explanation': explanation,
+            'topic': topic,
             'difficulty': difficulty,
-        'full_response': full_response
-    }
-    
+            'full_response': full_response
+        }
+        
         # Save question to database
         save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "Basic Mathematics" else None)
         
@@ -918,16 +919,16 @@ def main():
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     
     # Add handlers
-app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
-app.add_handler(CommandHandler("question", manual_question))
+    app.add_handler(CommandHandler("question", manual_question))
     app.add_handler(CommandHandler("settings", show_settings))
     app.add_handler(CommandHandler("stats", show_stats))
     app.add_handler(CommandHandler("language", language_command))
     
     # Add callback handlers with proper priority
     app.add_handler(CallbackQueryHandler(topic_math_subtopic_callback, pattern="^topic_math_subtopic_"))
-app.add_handler(CallbackQueryHandler(topic_callback, pattern="^topic_"))
+    app.add_handler(CallbackQueryHandler(topic_callback, pattern="^topic_"))
     app.add_handler(CallbackQueryHandler(difficulty_callback, pattern="^difficulty_"))
     app.add_handler(CallbackQueryHandler(language_callback, pattern="^language_"))
     app.add_handler(CallbackQueryHandler(reset_stats_callback, pattern="^reset_stats$"))
@@ -936,18 +937,11 @@ app.add_handler(CallbackQueryHandler(topic_callback, pattern="^topic_"))
     # Add message handler for answers
     app.add_handler(MessageHandler(filters=None, callback=handle_answer))
     
-    # Setup scheduler
-    scheduler = AsyncIOScheduler()
-    scheduler.add_job(
-        send_scheduled_questions,
-        'interval',
-        hours=2,
-        args=[app]
-    )
-scheduler.start()
-
     print("Bot started successfully!")
-app.run_polling()
+    print("Note: Scheduled questions are disabled for now. Use /question for manual questions.")
+    
+    # Run the bot
+    app.run_polling()
 
 if __name__ == '__main__':
     main()
