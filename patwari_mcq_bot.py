@@ -305,7 +305,7 @@ def create_image_prompt(topic, math_subtopic, question_content):
     fractions = re.findall(r'\d+/\d+', question_content)
     percentages = re.findall(r'\d+%', question_content)
     
-    if topic == "Basic Mathematics" and math_subtopic:
+    if topic == "General Mathematics" and math_subtopic:
         if "mensuration" in math_subtopic.lower():
             if "rectangle" in question_content or "आयत" in question_content:
                 if len(numbers) >= 2:
@@ -549,7 +549,7 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
     
     # Topic-specific instructions
     topic_instructions = {
-        "Basic Mathematics": f"""
+        "General Mathematics": f"""
         MATHEMATICS SPECIFIC INSTRUCTIONS:
         - Use simple numbers and basic operations (+, -, *, /)
         - Avoid fractions, decimals, percentages unless necessary
@@ -569,7 +569,7 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
     
     # Math subtopic handling
     math_subtopic_text = ""
-    if topic == "Basic Mathematics" and math_subtopic:
+    if topic == "General Mathematics" and math_subtopic:
         math_subtopic_text = f"Focus specifically on: {math_subtopic}"
     
     prompt = f"""
@@ -616,7 +616,7 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
         
         # Determine if image is needed - ONLY for cases where visual representation is absolutely essential
         needs_image = False
-        if topic == "Basic Mathematics" and math_subtopic:
+        if topic == "General Mathematics" and math_subtopic:
             # Only for topics that absolutely require visual representation
             essential_visual_topics = ["data interpretation", "quadratic equations", "geometry", "trigonometry", "statistics"]
             if any(img_topic in math_subtopic.lower() for img_topic in essential_visual_topics):
@@ -759,7 +759,7 @@ async def manual_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
         }
         
         # Save question to database
-        save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "Basic Mathematics" else None)
+        save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "General Mathematics" else None)
         
         # Get language-specific texts
         texts = interface_texts.get(language, interface_texts["English"])
@@ -832,7 +832,7 @@ async def send_question_to_user(context, chat_id):
         }
         
         # Save question to database
-        save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "Basic Mathematics" else None)
+        save_question_to_db(topic, difficulty, question_text, correct_answer, explanation, math_subtopic if topic == "General Mathematics" else None)
         
         # Get language-specific texts
         texts = interface_texts.get(language, interface_texts["English"])
@@ -955,7 +955,7 @@ async def settings_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("🔬 General Science", callback_data="topic_General Science")],
             [InlineKeyboardButton("📖 General Hindi", callback_data="topic_General Hindi")],
             [InlineKeyboardButton("🇺🇸 General English", callback_data="topic_General English")],
-            [InlineKeyboardButton("🔢 Basic Mathematics", callback_data="topic_Basic Mathematics")],
+            [InlineKeyboardButton("🔢 General Mathematics", callback_data="topic_General Mathematics")],
             [InlineKeyboardButton("📚 General Knowledge", callback_data="topic_General Knowledge")],
             [InlineKeyboardButton("💻 Computer Knowledge", callback_data="topic_Computer Knowledge")],
             [InlineKeyboardButton("🧠 Reasoning Ability", callback_data="topic_Reasoning Ability")],
@@ -991,7 +991,7 @@ async def topic_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     topic = query.data.replace("topic_", "")
     chat_id = query.message.chat_id
     
-    if topic == "Basic Mathematics":
+    if topic == "General Mathematics":
         keyboard = [
             [InlineKeyboardButton("🔢 Decimals and Fractions", callback_data="topic_math_subtopic_Decimals and Fractions")],
             [InlineKeyboardButton("√ Square Root and Cube Root", callback_data="topic_math_subtopic_Square Root and Cube Root")],
@@ -1031,7 +1031,7 @@ async def topic_math_subtopic_callback(update: Update, context: ContextTypes.DEF
     math_subtopic = query.data.replace("topic_math_subtopic_", "")
     chat_id = query.message.chat_id
     
-    update_user_preferences(chat_id, topic="Basic Mathematics", math_subtopic=math_subtopic)
+    update_user_preferences(chat_id, topic="General Mathematics", math_subtopic=math_subtopic)
     await query.edit_message_text(f"✅ Mathematics subtopic updated to: {math_subtopic}")
 
 async def difficulty_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
