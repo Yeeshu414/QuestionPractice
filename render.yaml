@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: mp-patwari-mcq-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python patwari_mcq_bot.py
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+    disk:
+      name: mcq-bot-disk
+      mountPath: /opt/render/project/src
+      sizeGB: 1
