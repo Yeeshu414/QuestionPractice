@@ -307,7 +307,7 @@ def create_image_prompt(topic, math_subtopic, question_content):
                     return f"Educational diagram of circle with radius {numbers[0]} cm. Clear labels, white background, black lines."
             return "Educational diagram showing geometric shapes with labeled dimensions. Clear mathematical figures, white background, black lines."
         
-        elif "data interpretation" in math_subtopic.lower():
+        elif "data interpretation" in math_subtopic.lower() or "data sufficiency" in math_subtopic.lower():
             data_values = ', '.join(numbers[:4]) if numbers else 'sample data'
             if "bar chart" in question_content or "बार चार्ट" in question_content:
                 return f"Professional bar chart showing data: {data_values}. Clear labels, different colored bars, educational style."
@@ -332,24 +332,151 @@ def create_image_prompt(topic, math_subtopic, question_content):
         elif "permutation" in math_subtopic.lower() or "combination" in math_subtopic.lower():
             return "Educational diagram showing arrangement of objects in different combinations. Clean, organized layout."
         
+        elif "arithmetic" in math_subtopic.lower():
+            if numbers:
+                return f"Educational arithmetic diagram showing numbers {', '.join(numbers[:3])} with basic operations. Clean, simple layout."
+            return "Educational arithmetic diagram showing basic mathematical operations. Clean, simple layout."
+        
+        elif "geometry" in math_subtopic.lower():
+            if "triangle" in question_content or "त्रिभुज" in question_content:
+                return "Educational geometric diagram showing triangles with angles and sides labeled. Clean, mathematical illustration."
+            elif "circle" in question_content or "वृत्त" in question_content:
+                return "Educational geometric diagram showing circles with radius and diameter labeled. Clean, mathematical illustration."
+            return "Educational geometric diagram showing various shapes with measurements. Clean, mathematical illustration."
+        
+        elif "algebra" in math_subtopic.lower():
+            if numbers:
+                return f"Educational algebraic diagram showing equations with variables and numbers {', '.join(numbers[:3])}. Clean, mathematical layout."
+            return "Educational algebraic diagram showing equations and variables. Clean, mathematical layout."
+        
+        elif "number system" in math_subtopic.lower():
+            if numbers:
+                return f"Educational number system diagram showing numbers {', '.join(numbers[:4])} with place values. Clean, organized layout."
+            return "Educational number system diagram showing place values and number properties. Clean, organized layout."
+        
+        elif "trigonometry" in math_subtopic.lower():
+            return "Educational trigonometric diagram showing right triangles with angles and ratios labeled. Clean, mathematical illustration."
+        
+        elif "percentage" in math_subtopic.lower() or "ratio" in math_subtopic.lower():
+            if numbers:
+                return f"Educational percentage/ratio diagram showing {', '.join(numbers[:3])} with calculations. Clean, organized layout."
+            return "Educational percentage and ratio diagram showing calculations and comparisons. Clean, organized layout."
+        
+        elif "time" in math_subtopic.lower() or "work" in math_subtopic.lower():
+            return "Educational time and work diagram showing workers, time calculations, and efficiency. Clean, organized layout."
+        
+        elif "profit" in math_subtopic.lower() or "loss" in math_subtopic.lower():
+            if numbers:
+                return f"Educational profit/loss diagram showing cost price, selling price, and calculations with {', '.join(numbers[:3])}. Clean, business illustration."
+            return "Educational profit and loss diagram showing business calculations. Clean, business illustration."
+        
+        elif "interest" in math_subtopic.lower() or "rate of interest" in math_subtopic.lower():
+            if numbers:
+                return f"Educational interest calculation diagram showing principal, rate, time with {', '.join(numbers[:3])}. Clean, financial illustration."
+            return "Educational interest calculation diagram showing financial formulas. Clean, financial illustration."
+        
+        elif "decimals" in math_subtopic.lower() or "fractions" in math_subtopic.lower():
+            if numbers:
+                return f"Educational diagram showing decimal and fraction conversions with {', '.join(numbers[:3])}. Clean, mathematical layout."
+            return "Educational diagram showing decimal and fraction concepts. Clean, mathematical layout."
+        
+        elif "square root" in math_subtopic.lower() or "cube root" in math_subtopic.lower():
+            if numbers:
+                return f"Educational diagram showing square root and cube root calculations with {', '.join(numbers[:3])}. Clean, mathematical layout."
+            return "Educational diagram showing square root and cube root concepts. Clean, mathematical layout."
+        
+        elif "simplification" in math_subtopic.lower():
+            if numbers:
+                return f"Educational simplification diagram showing step-by-step calculations with {', '.join(numbers[:3])}. Clean, organized layout."
+            return "Educational diagram showing mathematical simplification steps. Clean, organized layout."
+        
+        elif "l.s." in math_subtopic.lower() or "m.s." in math_subtopic.lower():
+            return "Educational diagram showing Least Square and Most Square concepts with mathematical calculations. Clean, statistical layout."
+        
+        elif "time" in math_subtopic.lower() and "speed" in math_subtopic.lower() and "distance" in math_subtopic.lower():
+            if numbers:
+                return f"Educational time-speed-distance diagram showing calculations with {', '.join(numbers[:3])}. Clean, physics illustration."
+            return "Educational diagram showing time, speed, and distance relationships. Clean, physics illustration."
+        
+        elif "ratio" in math_subtopic.lower() and "proportion" in math_subtopic.lower():
+            if numbers:
+                return f"Educational ratio and proportion diagram showing calculations with {', '.join(numbers[:3])}. Clean, mathematical layout."
+            return "Educational diagram showing ratio and proportion concepts. Clean, mathematical layout."
+        
+        elif "partnership" in math_subtopic.lower():
+            if numbers:
+                return f"Educational partnership diagram showing profit/loss sharing with {', '.join(numbers[:3])}. Clean, business illustration."
+            return "Educational diagram showing partnership calculations and profit sharing. Clean, business illustration."
+        
+        elif "number series" in math_subtopic.lower():
+            if numbers:
+                return f"Educational number series diagram showing pattern with {', '.join(numbers[:5])}. Clean, organized layout."
+            return "Educational diagram showing number series patterns and sequences. Clean, organized layout."
+        
+        elif "discounts" in math_subtopic.lower():
+            if numbers:
+                return f"Educational discount calculation diagram showing price reductions with {', '.join(numbers[:3])}. Clean, business illustration."
+            return "Educational diagram showing discount calculations and pricing. Clean, business illustration."
+        
+        elif "averages" in math_subtopic.lower():
+            if numbers:
+                return f"Educational average calculation diagram showing data points {', '.join(numbers[:4])}. Clean, statistical layout."
+            return "Educational diagram showing average calculations and statistical concepts. Clean, statistical layout."
+        
+        elif "mixtures" in math_subtopic.lower():
+            if numbers:
+                return f"Educational mixture diagram showing different components with ratios {', '.join(numbers[:3])}. Clean, chemistry-style illustration."
+            return "Educational diagram showing mixture calculations and component ratios. Clean, chemistry-style illustration."
+        
+        elif "percentages" in math_subtopic.lower():
+            if numbers:
+                return f"Educational percentage calculation diagram showing {', '.join(numbers[:3])} with percentage calculations. Clean, mathematical layout."
+            return "Educational diagram showing percentage calculations and conversions. Clean, mathematical layout."
+        
+        elif "work" in math_subtopic.lower():
+            if numbers:
+                return f"Educational work calculation diagram showing workers and time with {', '.join(numbers[:3])}. Clean, organized layout."
+            return "Educational diagram showing work and time calculations. Clean, organized layout."
+        
         return f"Educational mathematical diagram for {math_subtopic} with clear labels and measurements."
     
     topic_prompts = {
-        "Science": {
+        "General Science": {
             "biology": "Educational biological diagram showing anatomical structures, cells, or biological processes. Clean, scientific illustration.",
             "chemistry": "Educational chemistry diagram showing molecular structures, chemical reactions, or laboratory equipment. Clean, scientific illustration.",
             "physics": "Educational physics diagram showing mechanical systems, electrical circuits, or physical phenomena. Clean, scientific illustration.",
             "default": "Educational scientific diagram with laboratory equipment, biological structures, or chemical processes. Clean, scientific illustration."
         },
-        "Geography": {
-            "map": "Educational geographic map showing countries, states, or regions with clear boundaries and labels. Clean, simple map style.",
-            "climate": "Educational diagram showing climate zones, weather patterns, or temperature maps. Clean, simple geographic illustration.",
-            "default": "Educational geographic illustration showing landforms, maps, or geographic features. Clean, simple geographic style."
+        "General Hindi": {
+            "grammar": "Educational diagram showing Hindi grammar rules, sentence structure, or language concepts. Clean, educational illustration.",
+            "literature": "Educational illustration showing Hindi literary figures, books, or cultural elements. Clean, cultural illustration style.",
+            "default": "Educational Hindi language diagram showing grammar, vocabulary, or literary concepts. Clean, educational illustration."
         },
-        "History": {
-            "monument": "Educational illustration of historical monuments or architectural structures. Clean, historical illustration style.",
-            "battle": "Educational illustration of historical battles or military events. Clean, historical illustration style.",
-            "default": "Educational historical illustration showing artifacts, monuments, or historical events. Clean, historical illustration style."
+        "General English": {
+            "grammar": "Educational diagram showing English grammar rules, sentence structure, or language concepts. Clean, educational illustration.",
+            "literature": "Educational illustration showing English literary figures, books, or cultural elements. Clean, cultural illustration style.",
+            "default": "Educational English language diagram showing grammar, vocabulary, or literary concepts. Clean, educational illustration."
+        },
+        "General Knowledge": {
+            "awards": "Educational illustration showing awards, medals, or recognition symbols. Clean, prestigious illustration.",
+            "sports": "Educational sports illustration showing various sports, equipment, or athletic achievements. Clean, dynamic illustration.",
+            "default": "Educational general knowledge illustration showing various topics, symbols, or informative elements. Clean, educational illustration."
+        },
+        "Computer Knowledge": {
+            "hardware": "Educational diagram showing computer hardware components, CPU, motherboard, or peripheral devices. Clean, technical illustration.",
+            "software": "Educational illustration showing software interfaces, applications, or programming concepts. Clean, modern illustration.",
+            "default": "Educational computer diagram showing hardware, software, or IT concepts. Clean, technical illustration."
+        },
+        "Reasoning Ability": {
+            "puzzle": "Educational diagram showing logical puzzles, patterns, or reasoning problems. Clean, organized layout.",
+            "series": "Educational illustration showing number series, pattern recognition, or sequence problems. Clean, mathematical layout.",
+            "default": "Educational reasoning diagram showing logical problems, patterns, or analytical concepts. Clean, organized illustration."
+        },
+        "General Management with MP GK": {
+            "management": "Educational diagram showing management principles, organizational structure, or business concepts. Clean, professional illustration.",
+            "mp_map": "Educational map of Madhya Pradesh showing districts, cities, or geographical features. Clean, simple map style.",
+            "government": "Educational illustration showing MP government buildings, symbols, or administrative structure. Clean, official illustration.",
+            "default": "Educational MP management diagram showing administrative concepts, geography, or government structure. Clean, official illustration."
         }
     }
     
@@ -412,10 +539,13 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
         - Use plain text format - NO LaTeX code or mathematical formatting
         - Use simple text for mathematical expressions
         """,
-        "Science": "Focus on practical applications and real-world examples. Include specific scientific terms and concepts.",
-        "Geography": "Include specific locations, geographical features, or cultural aspects. Make questions practical and location-specific.",
-        "History": "Include specific dates, events, or historical figures. Make questions factual and educational.",
-        "General Knowledge": "Create questions that are educational and cover various topics including current affairs, literature, arts, etc."
+        "General Science": "Focus on basic science concepts from Biology, Chemistry, and Physics. Include practical applications, scientific phenomena, and fundamental principles. Keep questions relevant to competitive exam level.",
+        "General Hindi": "Focus on Hindi grammar, literature, vocabulary, and language skills. Include questions about Hindi poets, writers, literary works, grammar rules, and language usage. Use proper Hindi terminology.",
+        "General English": "Focus on English grammar, vocabulary, comprehension, and language skills. Include questions about grammar rules, synonyms, antonyms, idioms, and English literature basics.",
+        "General Knowledge": "Create questions covering current affairs, history, geography, sports, awards, books, authors, and general awareness topics relevant to competitive exams.",
+        "Computer Knowledge": "Focus on basic computer concepts, hardware, software, internet, MS Office, computer terminology, and fundamental IT knowledge relevant to competitive exams.",
+        "Reasoning Ability": "Focus on logical reasoning, analytical ability, verbal reasoning, non-verbal reasoning, puzzles, series, coding-decoding, and problem-solving skills.",
+        "General Management with MP GK": "Focus on management principles, Madhya Pradesh specific knowledge including geography, history, culture, current affairs, government schemes, and administrative aspects of MP."
     }
     
     # Math subtopic handling
@@ -468,9 +598,9 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
         # Determine if image is needed
         needs_image = False
         if topic == "Basic Mathematics" and math_subtopic:
-            image_topics = ["mensuration", "data interpretation", "quadratic equations", "probability", "permutation", "combination"]
+            image_topics = ["mensuration", "data interpretation", "quadratic equations", "probability", "permutation", "combination", "geometry", "trigonometry", "statistics", "square root", "cube root", "simplification", "time", "speed", "distance", "number series", "data sufficiency", "averages", "mixtures", "percentages", "profit", "loss", "work", "rate of interest"]
             needs_image = any(img_topic in math_subtopic.lower() for img_topic in image_topics)
-        elif topic in ["Science", "Geography", "History"]:
+        elif topic in ["General Science", "General Hindi", "General English", "General Knowledge", "Computer Knowledge", "Reasoning Ability", "General Management with MP GK"]:
             needs_image = True
         
         return full_response, topic, math_subtopic, needs_image
@@ -790,11 +920,14 @@ async def settings_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if data == "settings_topic":
         keyboard = [
-            [InlineKeyboardButton("📚 General Knowledge", callback_data="topic_General Knowledge")],
+            [InlineKeyboardButton("🔬 General Science", callback_data="topic_General Science")],
+            [InlineKeyboardButton("📖 General Hindi", callback_data="topic_General Hindi")],
+            [InlineKeyboardButton("🇺🇸 General English", callback_data="topic_General English")],
             [InlineKeyboardButton("🔢 Basic Mathematics", callback_data="topic_Basic Mathematics")],
-            [InlineKeyboardButton("🔬 Science", callback_data="topic_Science")],
-            [InlineKeyboardButton("🌍 Geography", callback_data="topic_Geography")],
-            [InlineKeyboardButton("📜 History", callback_data="topic_History")]
+            [InlineKeyboardButton("📚 General Knowledge", callback_data="topic_General Knowledge")],
+            [InlineKeyboardButton("💻 Computer Knowledge", callback_data="topic_Computer Knowledge")],
+            [InlineKeyboardButton("🧠 Reasoning Ability", callback_data="topic_Reasoning Ability")],
+            [InlineKeyboardButton("🏛️ General Management with MP GK", callback_data="topic_General Management with MP GK")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text("📚 Select Topic:", reply_markup=reply_markup)
@@ -828,11 +961,29 @@ async def topic_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if topic == "Basic Mathematics":
         keyboard = [
-            [InlineKeyboardButton("📐 Mensuration", callback_data="topic_math_subtopic_Mensuration")],
+            [InlineKeyboardButton("🔢 Decimals and Fractions", callback_data="topic_math_subtopic_Decimals and Fractions")],
+            [InlineKeyboardButton("√ Square Root and Cube Root", callback_data="topic_math_subtopic_Square Root and Cube Root")],
+            [InlineKeyboardButton("🧮 Simplification", callback_data="topic_math_subtopic_Simplification")],
+            [InlineKeyboardButton("📏 L.S. and M.S.", callback_data="topic_math_subtopic_L.S. and M.S.")],
+            [InlineKeyboardButton("⏰ Time, Speed, and Distance", callback_data="topic_math_subtopic_Time, Speed, and Distance")],
+            [InlineKeyboardButton("📊 Mensuration", callback_data="topic_math_subtopic_Mensuration")],
+            [InlineKeyboardButton("🔢 Number System", callback_data="topic_math_subtopic_Number System")],
+            [InlineKeyboardButton("💰 Simple and Compound Interest", callback_data="topic_math_subtopic_Simple and Compound Interest")],
+            [InlineKeyboardButton("📊 Ratio and Proportion", callback_data="topic_math_subtopic_Ratio and Proportion")],
+            [InlineKeyboardButton("🤝 Partnership", callback_data="topic_math_subtopic_Partnership")],
+            [InlineKeyboardButton("🔢 Number Series", callback_data="topic_math_subtopic_Number Series")],
             [InlineKeyboardButton("📊 Data Interpretation", callback_data="topic_math_subtopic_Data Interpretation")],
             [InlineKeyboardButton("📈 Quadratic Equations", callback_data="topic_math_subtopic_Quadratic Equations")],
+            [InlineKeyboardButton("📋 Data Sufficiency", callback_data="topic_math_subtopic_Data Sufficiency")],
+            [InlineKeyboardButton("🏷️ Discounts", callback_data="topic_math_subtopic_Discounts")],
+            [InlineKeyboardButton("📊 Averages", callback_data="topic_math_subtopic_Averages")],
+            [InlineKeyboardButton("🥤 Mixtures", callback_data="topic_math_subtopic_Mixtures")],
+            [InlineKeyboardButton("📊 Percentages", callback_data="topic_math_subtopic_Percentages")],
+            [InlineKeyboardButton("💰 Profit and Loss", callback_data="topic_math_subtopic_Profit and Loss")],
+            [InlineKeyboardButton("⚙️ Work", callback_data="topic_math_subtopic_Work")],
+            [InlineKeyboardButton("📈 Rate of Interest", callback_data="topic_math_subtopic_Rate of Interest")],
             [InlineKeyboardButton("🎲 Probability", callback_data="topic_math_subtopic_Probability")],
-            [InlineKeyboardButton("🔢 Permutation & Combination", callback_data="topic_math_subtopic_Permutation & Combination")],
+            [InlineKeyboardButton("🔢 Permutation and Combination", callback_data="topic_math_subtopic_Permutation and Combination")],
             [InlineKeyboardButton("📚 All Mathematics", callback_data="topic_math_subtopic_All Mathematics")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
