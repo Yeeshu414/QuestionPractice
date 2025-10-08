@@ -123,6 +123,13 @@ def init_database():
         )
     ''')
     
+    # Add math_subtopic column if it doesn't exist
+    try:
+        cursor.execute('ALTER TABLE questions ADD COLUMN math_subtopic TEXT DEFAULT NULL')
+    except sqlite3.OperationalError:
+        # Column already exists
+        pass
+    
     conn.commit()
     conn.close()
 
@@ -292,7 +299,11 @@ def download_image(url, filename):
         return False
 
 def create_image_prompt(topic, math_subtopic, question_content):
-    numbers = re.findall(r'-?\d+', question_content)
+    # Extract numbers more precisely from the question content
+    numbers = re.findall(r'-?\d+(?:\.\d+)?', question_content)
+    # Also extract fractions and percentages
+    fractions = re.findall(r'\d+/\d+', question_content)
+    percentages = re.findall(r'\d+%', question_content)
     
     if topic == "Basic Mathematics" and math_subtopic:
         if "mensuration" in math_subtopic.lower():
@@ -308,12 +319,19 @@ def create_image_prompt(topic, math_subtopic, question_content):
             return "Educational diagram showing geometric shapes with labeled dimensions. Clear mathematical figures, white background, black lines."
         
         elif "data interpretation" in math_subtopic.lower() or "data sufficiency" in math_subtopic.lower():
-            data_values = ', '.join(numbers[:4]) if numbers else 'sample data'
+            # Use actual numbers from the question
+            if numbers:
+                data_values = ', '.join(numbers[:6])  # Show more numbers if available
+            elif percentages:
+                data_values = ', '.join(percentages[:4])
+            else:
+                data_values = 'sample data'
+            
             if "bar chart" in question_content or "बार चार्ट" in question_content:
                 return f"Professional bar chart showing data: {data_values}. Clear labels, different colored bars, educational style."
             elif "pie chart" in question_content or "पाई चार्ट" in question_content:
                 return f"Professional pie chart with segments: {data_values}. Clear labels, different colors, educational style."
-            return "Professional data visualization chart with clear labels and values. Educational style."
+            return f"Professional data visualization chart with values: {data_values}. Clear labels, educational style."
         
         elif "quadratic equations" in math_subtopic.lower():
             if len(numbers) >= 3:
@@ -420,17 +438,18 @@ def create_image_prompt(topic, math_subtopic, question_content):
         
         elif "averages" in math_subtopic.lower():
             if numbers:
-                return f"Educational average calculation diagram showing data points {', '.join(numbers[:4])}. Clean, statistical layout."
+                return f"Educational average calculation diagram showing data points: {', '.join(numbers[:5])}. Clean, statistical layout with clear labels."
             return "Educational diagram showing average calculations and statistical concepts. Clean, statistical layout."
         
         elif "mixtures" in math_subtopic.lower():
             if numbers:
-                return f"Educational mixture diagram showing different components with ratios {', '.join(numbers[:3])}. Clean, chemistry-style illustration."
+                return f"Educational mixture diagram showing different components with ratios: {', '.join(numbers[:4])}. Clean, chemistry-style illustration with labeled components."
             return "Educational diagram showing mixture calculations and component ratios. Clean, chemistry-style illustration."
         
         elif "percentages" in math_subtopic.lower():
-            if numbers:
-                return f"Educational percentage calculation diagram showing {', '.join(numbers[:3])} with percentage calculations. Clean, mathematical layout."
+            if numbers or percentages:
+                values = numbers[:3] if numbers else percentages[:3]
+                return f"Educational percentage calculation diagram showing values: {', '.join(values)}. Clean, mathematical layout with percentage calculations."
             return "Educational diagram showing percentage calculations and conversions. Clean, mathematical layout."
         
         elif "work" in math_subtopic.lower():
@@ -595,13 +614,26 @@ def generate_mcq(topic, difficulty, chat_id, language="English", math_subtopic=N
         
         full_response = response.choices[0].message.content.strip()
         
-        # Determine if image is needed
+        # Determine if image is needed - ONLY for cases where visual representation is absolutely essential
         needs_image = False
         if topic == "Basic Mathematics" and math_subtopic:
-            image_topics = ["mensuration", "data interpretation", "quadratic equations", "probability", "permutation", "combination", "geometry", "trigonometry", "statistics", "square root", "cube root", "simplification", "time", "speed", "distance", "number series", "data sufficiency", "averages", "mixtures", "percentages", "profit", "loss", "work", "rate of interest"]
-            needs_image = any(img_topic in math_subtopic.lower() for img_topic in image_topics)
-        elif topic in ["General Science", "General Hindi", "General English", "General Knowledge", "Computer Knowledge", "Reasoning Ability", "General Management with MP GK"]:
-            needs_image = True
+            # Only for topics that absolutely require visual representation
+            essential_visual_topics = ["data interpretation", "quadratic equations", "geometry", "trigonometry", "statistics"]
+            if any(img_topic in math_subtopic.lower() for img_topic in essential_visual_topics):
+                # Additional check: only generate image if question explicitly mentions visual elements
+                essential_visual_keywords = ["chart", "graph", "diagram", "figure", "triangle", "circle", "rectangle", "bar chart", "pie chart", "plot", "visual"]
+                question_lower = full_response.lower()
+                needs_image = any(keyword in question_lower for keyword in essential_visual_keywords)
+        elif topic in ["General Science"]:
+            # Only for science topics that explicitly mention visual elements
+            essential_science_keywords = ["diagram", "structure", "cell", "molecule", "reaction", "circuit", "organ"]
+            question_lower = full_response.lower()
+            needs_image = any(keyword in question_lower for keyword in essential_science_keywords)
+        elif topic in ["General Management with MP GK"]:
+            # Only for MP topics that explicitly mention maps or diagrams
+            essential_mp_keywords = ["map", "district", "state", "geography", "location", "diagram"]
+            question_lower = full_response.lower()
+            needs_image = any(keyword in question_lower for keyword in essential_mp_keywords)
         
         return full_response, topic, math_subtopic, needs_image
         
