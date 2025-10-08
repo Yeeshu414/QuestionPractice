@@ -764,7 +764,13 @@ async def manual_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Get language-specific texts
         texts = interface_texts.get(language, interface_texts["English"])
         difficulty_emoji = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴"}
-        question_message = f"{texts['question_ready']}\n{texts['topic']} {topic}\n{texts['difficulty']} {difficulty_emoji.get(difficulty, '🟡')} {difficulty}\n\n{texts['question']} {question_text}\n\n{options_text}\n\n{texts['reply_instruction']}"
+        
+        # Include subtopic for General Mathematics
+        topic_display = topic
+        if topic == "General Mathematics" and math_subtopic:
+            topic_display = f"{topic} - {math_subtopic}"
+        
+        question_message = f"{texts['question_ready']}\n{texts['topic']} {topic_display}\n{texts['difficulty']} {difficulty_emoji.get(difficulty, '🟡')} {difficulty}\n\n{texts['question']} {question_text}\n\n{options_text}\n\n{texts['reply_instruction']}"
         
         # Generate and send image if needed
         if needs_image:
@@ -837,7 +843,13 @@ async def send_question_to_user(context, chat_id):
         # Get language-specific texts
         texts = interface_texts.get(language, interface_texts["English"])
         difficulty_emoji = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴"}
-        question_message = f"{texts['question_ready']}\n{texts['topic']} {topic}\n{texts['difficulty']} {difficulty_emoji.get(difficulty, '🟡')} {difficulty}\n\n{texts['question']} {question_text}\n\n{options_text}\n\n{texts['reply_instruction']}"
+        
+        # Include subtopic for General Mathematics
+        topic_display = topic
+        if topic == "General Mathematics" and math_subtopic:
+            topic_display = f"{topic} - {math_subtopic}"
+        
+        question_message = f"{texts['question_ready']}\n{texts['topic']} {topic_display}\n{texts['difficulty']} {difficulty_emoji.get(difficulty, '🟡')} {difficulty}\n\n{texts['question']} {question_text}\n\n{options_text}\n\n{texts['reply_instruction']}"
         
         # Generate and send image if needed
         if needs_image:
